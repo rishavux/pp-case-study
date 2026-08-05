@@ -1,19 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
   const section = document.querySelector('.key-decisions-section');
-  const navbar = section.querySelector('.key-decisions-navbar');
   const frame = section.querySelector('.key-decisions-frame');
-  const lowerPanel = section.querySelector('.key-decisions-lower-panel');
   const mainDefault = frame.querySelector('.main-panel-view--default');
   const mainBlank = frame.querySelector('.main-panel-view--blank');
   const sideDefault = frame.querySelector('.side-column-view--default');
   const sideBlank = frame.querySelector('.side-column-view--blank');
   const railItems = frame.querySelectorAll('.rail-item');
+  const triggers = section.querySelectorAll('[data-decision]');
+  const lowerPanelViews = section.querySelectorAll('.lower-panel-view');
   const resetButton = document.querySelector('[data-action="reset"]');
-  const triggers = frame.querySelectorAll('[data-decision]');
-
-  function syncLowerPanelHeight() {
-    lowerPanel.style.height = `${navbar.offsetHeight * 2}px`;
-  }
 
   function showDecision(decisionId) {
     mainDefault.classList.add('is-hidden');
@@ -24,6 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     railItems.forEach((item) => {
       item.classList.toggle('is-active', item.dataset.decision === decisionId);
+    });
+
+    lowerPanelViews.forEach((view) => {
+      view.classList.toggle('is-hidden', view.dataset.decision !== decisionId);
     });
   }
 
@@ -43,20 +42,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   resetButton.addEventListener('click', showDefault);
 
-  syncLowerPanelHeight();
-  window.addEventListener('resize', syncLowerPanelHeight);
-
   const compareImage = document.getElementById('visualProofImage');
   const compareButtons = document.querySelectorAll('.compare-toggle-btn');
   const compareImages = {
     before: 'Before & After/Before Visual Proof.png',
     after: 'Before & After/After Visual Proof.png',
   };
+  const labelCallouts = document.querySelectorAll('.label-callouts');
 
   compareButtons.forEach((button) => {
     button.addEventListener('click', () => {
-      compareImage.src = compareImages[button.dataset.compare];
+      const state = button.dataset.compare;
+      compareImage.src = compareImages[state];
       compareButtons.forEach((btn) => btn.classList.toggle('is-active', btn === button));
+      labelCallouts.forEach((group) => {
+        group.classList.toggle('is-hidden', !group.classList.contains(`label-callouts--${state}`));
+      });
     });
   });
 });
