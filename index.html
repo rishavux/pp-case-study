@@ -68,11 +68,9 @@
           <div class="key-decisions-header-nav">
             <button class="key-decisions-nav-btn key-decisions-nav-btn--prev" type="button" data-nav="prev" aria-label="Previous decision">
               <svg width="16" height="16" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 6l-6 6l6 6"/></svg>
-              <span class="key-decisions-nav-btn-label"></span>
             </button>
             <span class="key-decisions-header-title" id="decisionTitle"></span>
             <button class="key-decisions-nav-btn key-decisions-nav-btn--next" type="button" data-nav="next" aria-label="Next decision">
-              <span class="key-decisions-nav-btn-label"></span>
               <svg width="16" height="16" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 6l6 6l-6 6"/></svg>
             </button>
           </div>
@@ -125,51 +123,57 @@
               <span class="rail-icon">
                 <svg width="16" height="16" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0m.6-3h16.8M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18m1-18a17 17 0 0 1 0 18"/></g></svg>
               </span>
-              <span class="rail-label">Web Experience</span>
+              <span class="rail-label">Web Demo</span>
             </button>
-            <button class="rail-item" type="button">
+            <button class="rail-item" type="button" data-decision="mobile-demo">
               <span class="rail-icon">
                 <svg width="16" height="16" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2zm5-1h2m-1 13v.01"/></svg>
               </span>
-              <span class="rail-label">Mobile Experience</span>
+              <span class="rail-label">Mobile Demo</span>
             </button>
           </div>
 
           <div class="rail-group">
             <span class="rail-group-label">Billing Page</span>
-            <button class="rail-item" type="button">
+            <button class="rail-item" type="button" data-decision="credits">
               <span class="rail-icon">
                 <svg width="16" height="16" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0-18 0"/><path d="M14.8 9A2 2 0 0 0 13 8h-2a2 2 0 1 0 0 4h2a2 2 0 1 1 0 4h-2a2 2 0 0 1-1.8-1M12 7v10"/></g></svg>
               </span>
               <span class="rail-label">Credits</span>
             </button>
-            <button class="rail-item" type="button">
+            <button class="rail-item" type="button" data-decision="subscriptions">
               <span class="rail-icon">
                 <svg width="16" height="16" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 11A8.1 8.1 0 0 0 4.5 9M4 5v4h4m-4 4a8.1 8.1 0 0 0 15.5 2m.5 4v-4h-4"/></svg>
               </span>
               <span class="rail-label">Subscriptions</span>
             </button>
-            <button class="rail-item" type="button">
-              <span class="rail-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M17 8V5a1 1 0 0 0-1-1H6a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2V6"/><path d="M20 12v4h-4a2 2 0 0 1 0-4z"/></g></svg>
-              </span>
-              <span class="rail-label">Top-Up</span>
-            </button>
           </div>
 
           <div class="rail-group">
-            <span class="rail-group-label">Demos</span>
-            <button class="rail-item" type="button">
+            <span class="rail-group-label">Studio Experience</span>
+            <button class="rail-item" type="button" data-decision="ai-suggestions">
               <span class="rail-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16l13-8z"/></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"/><path d="M18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456Z"/></svg>
               </span>
-              <span class="rail-label">Studio Demo</span>
+              <span class="rail-label">AI Suggestions</span>
             </button>
             <button class="rail-item" type="button">
               <span class="rail-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M11 3h10v8h-3l-4 2v-2h-3z"/><path d="M15 16v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h2m2 13v.01"/></g></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></svg>
               </span>
-              <span class="rail-label">Mobile Demo</span>
+              <span class="rail-label">Activity Panel</span>
+            </button>
+            <button class="rail-item" type="button">
+              <span class="rail-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><path d="M16 17.5l1.5 1.5 3-3"/></svg>
+              </span>
+              <span class="rail-label">Batch Selection</span>
+            </button>
+            <button class="rail-item" type="button">
+              <span class="rail-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16"/></svg>
+              </span>
+              <span class="rail-label">Download Panel</span>
             </button>
           </div>
         </nav>
@@ -251,7 +255,7 @@
             <span class="status-label">shipped</span>
           </div>
 
-          <div class="status-card-body status-card-body--scroll">
+          <div class="status-card-body">
             <ul class="status-tasks">
               <li>
                 <span class="progress-dot progress-dot--green"></span>
@@ -259,27 +263,27 @@
               </li>
               <li>
                 <span class="progress-dot progress-dot--green"></span>
-                <span class="task-name">Studio CTA</span>
+                <span class="task-name">Visualized usage</span>
               </li>
               <li>
                 <span class="progress-dot progress-dot--green"></span>
-                <span class="task-name">Web Experience</span>
+                <span class="task-name">Contextualized credits</span>
               </li>
               <li>
                 <span class="progress-dot progress-dot--green"></span>
-                <span class="task-name">Mobile Experience</span>
+                <span class="task-name">Consolidated actions</span>
               </li>
               <li>
                 <span class="progress-dot progress-dot--green"></span>
-                <span class="task-name">Credits</span>
+                <span class="task-name">Labeled icons</span>
               </li>
               <li>
                 <span class="progress-dot progress-dot--green"></span>
-                <span class="task-name">Subscriptions</span>
+                <span class="task-name">Stabilized viewport</span>
               </li>
               <li>
                 <span class="progress-dot progress-dot--green"></span>
-                <span class="task-name">Top-Up</span>
+                <span class="task-name">Enabled CTA</span>
               </li>
               <li>
                 <span class="progress-dot progress-dot--green"></span>
@@ -293,25 +297,9 @@
           </div>
         </div>
 
-        <button class="next-button" type="button" data-decision="visual-proof">
-          <span class="next-button-header">
-            <span class="next-button-label">View Decision</span>
-          </span>
-          <span class="next-button-body">
-            <span class="next-button-pill">
-              <span class="next-button-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0-4 0"/><path d="M21 12q-3.6 6-9 6t-9-6q3.6-6 9-6t9 6"/></g></svg>
-              </span>
-              <span class="next-button-name">Visual Proof</span>
-              <span class="next-button-arrow">
-                <svg width="16" height="16" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-6 6l6-6m-6-6l6 6"/></svg>
-              </span>
-            </span>
-          </span>
-        </button>
         </div>
         <div class="side-column-view side-column-view--blank is-hidden">
-          <div class="label-callout-center">
+          <div class="label-callout-center" data-decision="visual-proof">
             <div class="label-callouts label-callouts--before">
               <div class="label-callout-list">
                 <div class="label-callout">
@@ -333,6 +321,160 @@
                 <div class="label-callout">
                   <span class="label-callout-badge label-callout-badge--green">2</span>
                   <p class="label-callout-caption">Explicit demo label, distinguishable from signup</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="label-callout-center is-hidden" data-decision="web-experience">
+            <div class="label-callouts label-callouts--before">
+              <div class="label-callout-list">
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--orange">1</span>
+                  <p class="label-callout-caption">Sidebar icons unlabeled</p>
+                </div>
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--orange">2</span>
+                  <p class="label-callout-caption">Toggle controls resized viewport</p>
+                </div>
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--orange">3</span>
+                  <p class="label-callout-caption">Primary CTA area was disabled and underutilized</p>
+                </div>
+              </div>
+            </div>
+            <div class="label-callouts label-callouts--after is-hidden">
+              <div class="label-callout-list">
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--green">1</span>
+                  <p class="label-callout-caption">Sidebar icons labeled</p>
+                </div>
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--green">2</span>
+                  <p class="label-callout-caption">Fixed bar, viewport stable</p>
+                </div>
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--green">3</span>
+                  <p class="label-callout-caption">Primary CTA added to prompt Sign-Up action</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="label-callout-center is-hidden" data-decision="mobile-demo">
+            <div class="label-callouts label-callouts--before">
+              <div class="label-callout-list">
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--orange">1</span>
+                  <p class="label-callout-caption">Enhance action hidden in Tools tab</p>
+                </div>
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--orange">2</span>
+                  <p class="label-callout-caption">No visibility into selected images</p>
+                </div>
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--orange">3</span>
+                  <p class="label-callout-caption">Primary CTA was disabled</p>
+                </div>
+              </div>
+            </div>
+            <div class="label-callouts label-callouts--after is-hidden">
+              <div class="label-callout-list">
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--green">1</span>
+                  <p class="label-callout-caption">Enhance surfaced as primary CTA button</p>
+                </div>
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--green">2</span>
+                  <p class="label-callout-caption">Selectable image list, multi-select enabled</p>
+                </div>
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--green">3</span>
+                  <p class="label-callout-caption">CTA led to sign-up conversion</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="label-callout-center is-hidden" data-decision="credits">
+            <div class="label-callouts label-callouts--before">
+              <div class="label-callout-list">
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--orange">1</span>
+                  <p class="label-callout-caption">Cluttered numbers, no visual read</p>
+                </div>
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--orange">2</span>
+                  <p class="label-callout-caption">Credit count lacks real-world context</p>
+                </div>
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--orange">3</span>
+                  <p class="label-callout-caption">Cancel sits level with utility actions</p>
+                </div>
+              </div>
+            </div>
+            <div class="label-callouts label-callouts--after is-hidden">
+              <div class="label-callout-list">
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--green">1</span>
+                  <p class="label-callout-caption">Line graph shows usage at a glance</p>
+                </div>
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--green">2</span>
+                  <p class="label-callout-caption">States what credits are worth</p>
+                </div>
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--green">3</span>
+                  <p class="label-callout-caption">Details moved to a quiet top line</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="label-callout-center is-hidden" data-decision="subscriptions">
+            <div class="label-callouts label-callouts--before">
+              <div class="label-callout-list">
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--orange">1</span>
+                  <p class="label-callout-caption">No visual priority & CTA for current plan</p>
+                </div>
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--orange">2</span>
+                  <p class="label-callout-caption">"Downgrade" read as punitive, no billing toggle per card</p>
+                </div>
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--orange">3</span>
+                  <p class="label-callout-caption">No visual distinction for the premium tier</p>
+                </div>
+              </div>
+            </div>
+            <div class="label-callouts label-callouts--after is-hidden">
+              <div class="label-callout-list">
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--green">1</span>
+                  <p class="label-callout-caption">Enlarged and made the entry point into plan management</p>
+                </div>
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--green">2</span>
+                  <p class="label-callout-caption">Renamed "Switch to Starter," toggle added to each card</p>
+                </div>
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--green">3</span>
+                  <p class="label-callout-caption">Purple introduced as the premium tier's signal</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="label-callout-center is-hidden" data-decision="ai-suggestions">
+            <div class="label-callouts label-callouts--before">
+              <div class="label-callout-list">
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--orange">1</span>
+                  <p class="label-callout-caption">Suggestion popup blocked the viewport on every upload</p>
+                </div>
+              </div>
+            </div>
+            <div class="label-callouts label-callouts--after is-hidden">
+              <div class="label-callout-list">
+                <div class="label-callout">
+                  <span class="label-callout-badge label-callout-badge--green">1</span>
+                  <p class="label-callout-caption">Moved into the enhancement panel, glow cue added</p>
                 </div>
               </div>
             </div>
@@ -361,7 +503,51 @@
             </span>
             Context
           </h4>
-          <p class="lower-panel-placeholder">This decision is still being written up — check back soon for the full breakdown of what was addressed in the Web Experience redesign.</p>
+          <p class="lower-panel-placeholder">This was a user's first interface with the studio before signing up, so it needed to feel premium and purposeful even without upload access. Sidebar icons had no labels, and the toggle controls above the image caused the viewport to resize and glitch on interaction. The disabled "View Only" button became an active "Enhance 5 Photos Free" CTA, turning that first impression into conversion.</p>
+        </div>
+      </div>
+      <div class="lower-panel-view is-hidden" data-decision="mobile-demo">
+        <div class="lower-panel-content">
+          <h4 class="lower-panel-title">
+            <span class="label-callouts-title-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"/></svg>
+            </span>
+            Context
+          </h4>
+          <p class="lower-panel-placeholder">Mobile carried the same disabled-CTA problem as web, plus two more: the enhance action was buried in a secondary "Tools" tab, and there was no way to see which image was selected before enhancing. The redesign surfaces enhance as a primary CTA, adds a visible, selectable image list, and activates the CTA.</p>
+        </div>
+      </div>
+      <div class="lower-panel-view is-hidden" data-decision="credits">
+        <div class="lower-panel-content">
+          <h4 class="lower-panel-title">
+            <span class="label-callouts-title-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"/></svg>
+            </span>
+            Context
+          </h4>
+          <p class="lower-panel-placeholder">Credits led with raw numbers and four competing buttons, cancel included, before a user understood what they had. The redesign replaces the numbers with a usage graph, states what credits are worth, and moves detail actions behind a quiet link so cancel isn't the first option offered.</p>
+        </div>
+      </div>
+      <div class="lower-panel-view is-hidden" data-decision="subscriptions">
+        <div class="lower-panel-content">
+          <h4 class="lower-panel-title">
+            <span class="label-callouts-title-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"/></svg>
+            </span>
+            Context
+          </h4>
+          <p class="lower-panel-placeholder">Subscription cards read identically regardless of tier: the active plan's CTA matched its neighbors, "Downgrade" felt punitive, and the premium tier carried no visual signal. The redesign enlarges the active CTA, softens "Downgrade" to "Switch to Starter" with a per-card billing toggle, and introduces purple as Studio's dedicated premium cue.</p>
+        </div>
+      </div>
+      <div class="lower-panel-view is-hidden" data-decision="ai-suggestions">
+        <div class="lower-panel-content">
+          <h4 class="lower-panel-title">
+            <span class="label-callouts-title-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" clip-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 0 1 .67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 1 1-.671-1.34l.041-.022ZM12 9a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z"/></svg>
+            </span>
+            Context
+          </h4>
+          <p class="lower-panel-placeholder">The AI suggestion popup appeared directly in the main viewport for every uploaded photo, sitting in front of the image until a user actively dismissed it. Moved into the enhancement panel instead, with a glow effect marking the AI-selected options and accept/deny still available, so the suggestion informs the workflow rather than interrupting it.</p>
         </div>
       </div>
     </div>

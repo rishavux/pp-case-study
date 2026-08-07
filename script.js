@@ -16,8 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const decisionTitle = document.getElementById('decisionTitle');
   const navPrevBtn = document.querySelector('.key-decisions-nav-btn--prev');
   const navNextBtn = document.querySelector('.key-decisions-nav-btn--next');
-  const navPrevLabel = navPrevBtn.querySelector('.key-decisions-nav-btn-label');
-  const navNextLabel = navNextBtn.querySelector('.key-decisions-nav-btn-label');
 
   const compareFrame = document.getElementById('visualProofFrame');
   const compareSkeleton = compareFrame.querySelector('.compare-image-skeleton');
@@ -34,10 +32,27 @@ document.addEventListener('DOMContentLoaded', () => {
       before: { src: 'Before & After/Studio Web Before.png', alt: 'Property Pixel web product demo, before redesign' },
       after: { src: 'Before & After/Studio Web After.png', alt: 'Property Pixel web product demo, after redesign' },
     },
+    'mobile-demo': {
+      before: { src: 'Before & After/studio mobile before.png', alt: 'Property Pixel mobile product demo, before redesign' },
+      after: { src: 'Before & After/studio mobile after.png', alt: 'Property Pixel mobile product demo, after redesign' },
+    },
+    'credits': {
+      before: { src: 'Before & After/current plan before.png', alt: 'Property Pixel billing current plan, before redesign' },
+      after: { src: 'Before & After/current plan after.png', alt: 'Property Pixel billing current plan, after redesign' },
+    },
+    'subscriptions': {
+      before: { src: 'Before & After/subscription before.png', alt: 'Property Pixel subscriptions panel, before redesign' },
+      after: { src: 'Before & After/subscription after.png', alt: 'Property Pixel subscriptions panel, after redesign' },
+    },
+    'ai-suggestions': {
+      before: { src: 'Before & After/Ai Suggestion Updated Before.png', alt: 'Property Pixel AI suggestions overlay, before redesign' },
+      after: { src: 'Before & After/AI Suggestion After - web.png', alt: 'Property Pixel AI suggestions overlay, after redesign' },
+    },
   };
   const compareLoaded = {};
   const compareButtons = document.querySelectorAll('.compare-toggle-btn');
   const labelCallouts = document.querySelectorAll('.label-callouts');
+  const labelCalloutCenters = section.querySelectorAll('.label-callout-center');
   let compareActiveState = 'before';
   let currentDecisionId = null;
   let currentIndex = -1;
@@ -82,14 +97,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const nextItem = railSequence[currentIndex + 1];
 
     navPrevBtn.disabled = !prevItem;
-    navPrevLabel.textContent = prevItem ? prevItem.querySelector('.rail-label').textContent : '';
-
     navNextBtn.disabled = !nextItem;
-    navNextLabel.textContent = nextItem ? nextItem.querySelector('.rail-label').textContent : '';
   }
 
   function expandLowerPanel() {
     const targetHeight = lowerPanel.scrollHeight;
+    if (targetHeight === 0) {
+      const targetY = window.scrollY + section.getBoundingClientRect().top + 24;
+      window.scrollTo({ top: targetY, behavior: 'smooth' });
+      return;
+    }
     lowerPanel.style.transition = 'none';
     lowerPanel.style.overflow = 'hidden';
     lowerPanel.style.height = '0px';
@@ -107,12 +124,18 @@ document.addEventListener('DOMContentLoaded', () => {
       lowerPanel.style.overflow = '';
       lowerPanel.style.transition = '';
       lowerPanel.removeEventListener('transitionend', onEnd);
+      const targetY = window.scrollY + section.getBoundingClientRect().top + 24;
+      window.scrollTo({ top: targetY, behavior: 'smooth' });
     };
     lowerPanel.addEventListener('transitionend', onEnd);
   }
 
   function collapseLowerPanel(onComplete) {
     const startHeight = lowerPanel.scrollHeight;
+    if (startHeight === 0) {
+      if (onComplete) onComplete();
+      return;
+    }
     lowerPanel.style.transition = 'none';
     lowerPanel.style.overflow = 'hidden';
     lowerPanel.style.height = startHeight + 'px';
@@ -169,6 +192,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
       lowerPanelViews.forEach((view) => {
         view.classList.toggle('is-hidden', view.dataset.decision !== decisionId);
+      });
+
+      labelCalloutCenters.forEach((el) => {
+        el.classList.toggle('is-hidden', el.dataset.decision !== decisionId);
       });
 
       currentDecisionId = decisionId;
