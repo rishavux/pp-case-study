@@ -48,19 +48,45 @@ document.addEventListener('DOMContentLoaded', () => {
       before: { src: 'Before & After/Ai Suggestion Updated Before.png', alt: 'Property Pixel AI suggestions overlay, before redesign' },
       after: { src: 'Before & After/AI Suggestion After - web.png', alt: 'Property Pixel AI suggestions overlay, after redesign' },
     },
+    'activity-panel': {
+      before: { src: 'Before & After/Activity Panel after.png', alt: 'Property Pixel activity panel, before redesign' },
+      after: { src: 'Before & After/Activity Panel before.png', alt: 'Property Pixel activity panel, after redesign' },
+    },
+    'batch-selection': {
+      before: { src: 'Before & After/batch selection before.png', alt: 'Property Pixel batch selection, before redesign' },
+      after: { src: 'Before & After/batch selection after.png', alt: 'Property Pixel batch selection, after redesign' },
+    },
+    'download-panel': {
+      before: { src: 'Before & After/download before.png', alt: 'Property Pixel download panel, before redesign' },
+      after: [
+        { src: 'Before & After/download after 1.png', alt: 'Property Pixel download panel list view, after redesign' },
+        { src: 'Before & After/download after 2.png', alt: 'Property Pixel download panel preview mode, after redesign' },
+      ],
+    },
   };
   const compareLoaded = {};
   const compareButtons = document.querySelectorAll('.compare-toggle-btn');
+  const compareDotsEl = document.getElementById('compareDots');
   const labelCallouts = document.querySelectorAll('.label-callouts');
   const labelCalloutCenters = section.querySelectorAll('.label-callout-center');
   let compareActiveState = 'before';
+  let compareVariantIndex = 0;
   let currentDecisionId = null;
+  let autoCycleTimer = null;
+
+  function getStateVariants(decisionId, state) {
+    const images = decisionImages[decisionId];
+    const value = images && images[state];
+    if (!value) return [];
+    return Array.isArray(value) ? value : [value];
+  }
+
   let currentIndex = -1;
 
-  function markCompareLoaded(decisionId, state) {
-    if (!compareLoaded[decisionId]) compareLoaded[decisionId] = {};
-    compareLoaded[decisionId][state] = true;
-    if (decisionId === currentDecisionId && state === compareActiveState) {
+  function markCompareLoaded(cacheKey) {
+    compareLoaded[cacheKey] = true;
+    const [decisionId, state, variantIndex] = cacheKey.split('::');
+    if (decisionId === currentDecisionId && state === compareActiveState && Number(variantIndex) === compareVariantIndex) {
       compareSkeleton.classList.add('is-hidden');
     }
   }
@@ -68,28 +94,93 @@ document.addEventListener('DOMContentLoaded', () => {
   function preloadCompareImages(decisionId) {
     const images = decisionImages[decisionId];
     if (!images) return;
-    Object.entries(images).forEach(([state, { src, alt }]) => {
-      const imgEl = compareImageEls[state];
-      if (imgEl.dataset.loadedFor === decisionId) return;
-      imgEl.dataset.loadedFor = decisionId;
-      imgEl.alt = alt;
-      imgEl.addEventListener('load', () => markCompareLoaded(decisionId, state), { once: true });
-      imgEl.src = src;
+    Object.keys(images).forEach((state) => {
+      getStateVariants(decisionId, state).forEach((variant, variantIndex) => {
+        const cacheKey = `${decisionId}::${state}::${variantIndex}`;
+        if (compareLoaded[cacheKey]) return;
+        const warmer = new Image();
+        warmer.addEventListener('load', () => markCompareLoaded(cacheKey), { once: true });
+        warmer.src = variant.src;
+      });
     });
   }
 
-  function setCompareState(state) {
-    compareActiveState = state;
-    const images = decisionImages[currentDecisionId];
-    Object.entries(compareImageEls).forEach(([key, el]) => {
-      el.classList.toggle('is-active', !!images && key === state);
+  function clearAutoCycle() {
+    if (autoCycleTimer) {
+      window.clearTimeout(autoCycleTimer);
+      autoCycleTimer = null;
+    }
+  }
+
+  function scheduleAutoCycle(variants) {
+    clearAutoCycle();
+    if (variants.length <= 1) return;
+    autoCycleTimer = window.setTimeout(() => {
+      setCompareState(compareActiveState, (compareVariantIndex + 1) % variants.length);
+    }, 3500);
+  }
+
+  function renderCompareDots(variants, activeIndex) {
+    compareDotsEl.innerHTML = '';
+    if (variants.length <= 1) {
+      compareDotsEl.classList.add('is-hidden');
+      return;
+    }
+    compareDotsEl.classList.remove('is-hidden');
+    variants.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'compare-dot' + (i === activeIndex ? ' is-active' : '');
+      dot.setAttribute('aria-label', `Show image ${i + 1} of ${variants.length}`);
+      dot.addEventListener('click', () => setCompareState(compareActiveState, i));
+      compareDotsEl.appendChild(dot);
     });
-    const isLoaded = !!images && !!(compareLoaded[currentDecisionId] && compareLoaded[currentDecisionId][state]);
-    compareSkeleton.classList.toggle('is-hidden', isLoaded);
+  }
+
+  function setCompareState(state, variantIndex) {
+    compareActiveState = state;
+    section.dataset.compareState = state;
+    const variants = getStateVariants(currentDecisionId, state);
+    compareVariantIndex = Math.min(variantIndex || 0, Math.max(variants.length - 1, 0));
+    const variant = variants[compareVariantIndex];
+    const imgEl = compareImageEls[state];
+    const wasActive = imgEl.classList.contains('is-active');
+
+    Object.entries(compareImageEls).forEach(([key, el]) => {
+      el.classList.toggle('is-active', key === state && !!variant);
+    });
+
+    if (variant) {
+      const cacheKey = `${currentDecisionId}::${state}::${compareVariantIndex}`;
+      const [oldDecisionId, oldState] = (imgEl.dataset.loadedKey || '').split('::');
+      const isSameVariantContext = oldDecisionId === currentDecisionId && oldState === state;
+      const applyImage = () => {
+        compareSkeleton.classList.toggle('is-hidden', !!compareLoaded[cacheKey]);
+        if (imgEl.dataset.loadedKey === cacheKey) return;
+        imgEl.dataset.loadedKey = cacheKey;
+        imgEl.alt = variant.alt;
+        imgEl.addEventListener('load', () => markCompareLoaded(cacheKey), { once: true });
+        imgEl.src = variant.src;
+      };
+
+      if (wasActive && isSameVariantContext && imgEl.dataset.loadedKey !== cacheKey) {
+        imgEl.classList.add('is-cycling');
+        window.setTimeout(() => {
+          applyImage();
+          requestAnimationFrame(() => imgEl.classList.remove('is-cycling'));
+        }, 200);
+      } else {
+        applyImage();
+      }
+    }
+
     compareButtons.forEach((btn) => btn.classList.toggle('is-active', btn.dataset.compare === state));
     labelCallouts.forEach((group) => {
       group.classList.toggle('is-hidden', !group.classList.contains(`label-callouts--${state}`));
     });
+
+    renderCompareDots(variants, compareVariantIndex);
+    scheduleAutoCycle(variants);
   }
 
   function updateNavButtons() {
@@ -222,6 +313,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function showDefault() {
     if (!section.classList.contains('is-panel-open')) return;
 
+    clearAutoCycle();
     collapseLowerPanel(() => {
       section.classList.remove('is-panel-open');
       mainBlank.classList.add('is-hidden');
