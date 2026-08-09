@@ -53,8 +53,8 @@ img, video {
 .section-heading {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-weight: 600;
-  font-size: 30px;
-  line-height: 36px;
+  font-size: clamp(25px, -15px + 3.125vw, 30px);
+  line-height: 1.2;
   letter-spacing: 0.5px;
   color: var(--pp-slate);
   white-space: nowrap;
@@ -93,8 +93,8 @@ img, video {
 .header-title {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-weight: 700;
-  font-size: 48px;
-  line-height: 52px;
+  font-size: clamp(40px, -24px + 5vw, 48px);
+  line-height: 1.083;
   letter-spacing: -0.4px;
   color: var(--pp-teal);
 }
@@ -102,7 +102,7 @@ img, video {
 .header-subtitle {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-weight: 400;
-  font-size: 24px;
+  font-size: clamp(20px, -12px + 2.5vw, 24px);
   line-height: 1.4;
   color: black;
   text-align: center;
@@ -115,9 +115,6 @@ img, video {
    INFO BAR
 ═══════════════════════════════════════════════════════════ */
 .info-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
   margin: 32px 0 0;
   padding: 24px 48px;
   background: var(--pp-teal-bg);
@@ -125,6 +122,14 @@ img, video {
   border-bottom: 2px solid var(--pp-teal);
   border-radius: 0;
   box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.4);
+}
+
+.info-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  max-width: 1440px;
+  margin: 0 auto;
 }
 
 .info-item {
@@ -176,6 +181,8 @@ img, video {
    PROJECT OVERVIEW
 ═══════════════════════════════════════════════════════════ */
 .overview-section {
+  max-width: 1440px;
+  margin: 0 auto;
   padding: 40px 116px 0;
 }
 
@@ -210,6 +217,8 @@ img, video {
    KEY DECISIONS
 ═══════════════════════════════════════════════════════════ */
 .key-decisions-section {
+  max-width: 1440px;
+  margin: 0 auto;
   padding: 24px 116px;
 }
 
