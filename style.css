@@ -651,7 +651,19 @@ img, video {
   object-position: top;
 }
 
+.key-decisions-section[data-active-decision="visual-proof"] .compare-image-frame {
+  width: 100%;
+  max-width: 500px;
+}
+
+.key-decisions-section[data-active-decision="web-experience"] .compare-image-frame {
+  width: 100%;
+  max-width: 500px;
+}
+
 .key-decisions-section[data-active-decision="credits"] .compare-image-frame {
+  width: 100%;
+  max-width: 500px;
   background: transparent;
 }
 
@@ -660,6 +672,8 @@ img, video {
 }
 
 .key-decisions-section[data-active-decision="subscriptions"] .compare-image-frame {
+  width: 100%;
+  max-width: 500px;
   background: transparent;
 }
 
@@ -669,6 +683,8 @@ img, video {
 
 .key-decisions-section[data-active-decision="ai-suggestions"] .compare-image-frame {
   aspect-ratio: 2400 / 1418;
+  width: 100%;
+  max-width: 500px;
   background: transparent;
 }
 
