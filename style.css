@@ -605,8 +605,9 @@ img, video {
 
 .key-decisions-section[data-active-decision="activity-panel"] .compare-image-frame {
   aspect-ratio: 2336 / 2968;
-  width: 100%;
-  max-width: calc(var(--kd-scale) * 322px);
+  height: 80%;
+  width: auto;
+  max-width: 100%;
   background: transparent;
 }
 
@@ -622,8 +623,7 @@ img, video {
 
 .key-decisions-section[data-active-decision="batch-selection"] .compare-image-frame {
   aspect-ratio: 3690 / 2848;
-  width: 100%;
-  max-width: calc(var(--kd-scale) * 552px);
+  width: 90%;
   background: transparent;
 }
 
@@ -654,18 +654,15 @@ img, video {
 }
 
 .key-decisions-section[data-active-decision="visual-proof"] .compare-image-frame {
-  width: 100%;
-  max-width: calc(var(--kd-scale) * 500px);
+  width: 90%;
 }
 
 .key-decisions-section[data-active-decision="web-experience"] .compare-image-frame {
-  width: 100%;
-  max-width: calc(var(--kd-scale) * 500px);
+  width: 90%;
 }
 
 .key-decisions-section[data-active-decision="credits"] .compare-image-frame {
-  width: 100%;
-  max-width: calc(var(--kd-scale) * 500px);
+  width: 90%;
   background: transparent;
 }
 
@@ -674,8 +671,7 @@ img, video {
 }
 
 .key-decisions-section[data-active-decision="subscriptions"] .compare-image-frame {
-  width: 100%;
-  max-width: calc(var(--kd-scale) * 500px);
+  width: 90%;
   background: transparent;
 }
 
@@ -685,8 +681,7 @@ img, video {
 
 .key-decisions-section[data-active-decision="ai-suggestions"] .compare-image-frame {
   aspect-ratio: 2400 / 1418;
-  width: 100%;
-  max-width: calc(var(--kd-scale) * 500px);
+  width: 90%;
   background: transparent;
 }
 
@@ -706,14 +701,17 @@ img, video {
 
 .key-decisions-section[data-active-decision="download-panel"] .compare-image-frame {
   aspect-ratio: 3524 / 4120;
-  width: 100%;
-  max-width: calc(var(--kd-scale) * 345px);
+  height: 80%;
+  width: auto;
+  max-width: 100%;
   background: transparent;
 }
 
 .key-decisions-section[data-active-decision="download-panel"][data-compare-state="after"] .compare-image-frame {
   aspect-ratio: 5048 / 4120;
-  max-width: calc(var(--kd-scale) * 483px);
+  height: auto;
+  width: 90%;
+  max-width: none;
 }
 
 .key-decisions-section[data-active-decision="download-panel"] .compare-image {
@@ -735,9 +733,7 @@ img, video {
 }
 
 .main-panel-view--blank {
-  justify-content: flex-start;
-  gap: calc(var(--kd-scale) * 12px);
-  padding-top: calc(var(--kd-scale) * 8px);
+  position: relative;
 }
 
 .compare-image-wrap {
@@ -840,7 +836,11 @@ img, video {
 }
 
 .compare-toggle {
-  flex-shrink: 0;
+  position: absolute;
+  top: calc(var(--kd-scale) * 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
   display: flex;
   align-items: center;
   gap: calc(var(--kd-scale) * 2px);
