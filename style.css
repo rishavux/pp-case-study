@@ -407,7 +407,9 @@ img, video {
   display: flex;
   align-items: stretch;
   width: 100%;
-  height: 440px;
+  min-height: 0;
+  /* width/height at the 1440px design width; scales height with width instead of pinning it */
+  aspect-ratio: 1208 / 560;
 }
 
 .key-decisions-lower-panel {
@@ -469,6 +471,7 @@ img, video {
 
 .key-decisions-frame .rail {
   width: 20%;
+  min-height: 0;
   background: var(--pp-navy);
   border-right: 1px solid #475569;
   box-sizing: border-box;
@@ -569,6 +572,7 @@ img, video {
 
 .key-decisions-frame .main-panel {
   width: 60%;
+  min-height: 0;
   display: flex;
   padding: 0;
   background: var(--pp-navy);
@@ -906,6 +910,7 @@ img, video {
 
 .key-decisions-frame .side-column {
   width: 20%;
+  min-height: 0;
   display: flex;
   border-left: 1px solid #475569;
   box-sizing: border-box;
@@ -918,27 +923,32 @@ img, video {
   height: 100%;
 }
 
-.side-column-view--default {
+.side-column-view--default,
+.side-column-view--blank {
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--pp-scrollbar-thumb) transparent;
 }
 
-.side-column-view--default::-webkit-scrollbar {
+.side-column-view--default::-webkit-scrollbar,
+.side-column-view--blank::-webkit-scrollbar {
   width: 2px;
 }
 
-.side-column-view--default::-webkit-scrollbar-button {
+.side-column-view--default::-webkit-scrollbar-button,
+.side-column-view--blank::-webkit-scrollbar-button {
   display: none;
   width: 0;
   height: 0;
 }
 
-.side-column-view--default::-webkit-scrollbar-track {
+.side-column-view--default::-webkit-scrollbar-track,
+.side-column-view--blank::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.side-column-view--default::-webkit-scrollbar-thumb {
+.side-column-view--default::-webkit-scrollbar-thumb,
+.side-column-view--blank::-webkit-scrollbar-thumb {
   background: var(--pp-scrollbar-thumb);
   border-radius: 2px;
   min-height: 24px;
