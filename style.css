@@ -411,7 +411,7 @@ img, video {
   width: 100%;
   min-height: 0;
   /* width/height at the 1440px design width; scales height with width instead of pinning it */
-  aspect-ratio: 1208 / 560;
+  aspect-ratio: 1208 / 480;
 }
 
 .key-decisions-lower-panel {
