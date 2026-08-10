@@ -23,32 +23,54 @@ document.addEventListener('DOMContentLoaded', () => {
   const mobileArrowNext = frame.querySelector('.mobile-carousel-arrow--next');
 
   const mobileQuery = window.matchMedia('(max-width: 768px)');
+  // outer wrap holds three siblings: nav row (arrows+dots), the bordered card, and the context block
   const mobileDetail = document.createElement('div');
-  mobileDetail.className = 'mobile-carousel-detail';
+  mobileDetail.className = 'mobile-carousel-wrap';
+  const mobileNav = document.createElement('div');
+  mobileNav.className = 'mobile-carousel-nav';
   const mobileDots = document.createElement('div');
   mobileDots.className = 'mobile-carousel-dots';
-  const mobileCardTitleRow = document.createElement('div');
-  mobileCardTitleRow.className = 'mobile-carousel-title-row';
+  const mobileNavPrevWrap = document.createElement('div');
+  mobileNavPrevWrap.className = 'mobile-carousel-nav-item mobile-carousel-nav-item--prev';
+  const mobileNavPrevLabel = document.createElement('span');
+  mobileNavPrevLabel.className = 'mobile-carousel-nav-label';
+  mobileNavPrevWrap.appendChild(mobileArrowPrev);
+  mobileNavPrevWrap.appendChild(mobileNavPrevLabel);
+  const mobileNavNextWrap = document.createElement('div');
+  mobileNavNextWrap.className = 'mobile-carousel-nav-item mobile-carousel-nav-item--next';
+  const mobileNavNextLabel = document.createElement('span');
+  mobileNavNextLabel.className = 'mobile-carousel-nav-label';
+  mobileNavNextWrap.appendChild(mobileArrowNext);
+  mobileNavNextWrap.appendChild(mobileNavNextLabel);
+  mobileNav.appendChild(mobileNavPrevWrap);
+  mobileNav.appendChild(mobileDots);
+  mobileNav.appendChild(mobileNavNextWrap);
+
+  const mobileCard = document.createElement('div');
+  mobileCard.className = 'mobile-carousel-card';
   const mobileCardTitle = document.createElement('h3');
   mobileCardTitle.className = 'mobile-carousel-title';
-  mobileCardTitleRow.appendChild(mobileArrowPrev);
-  mobileCardTitleRow.appendChild(mobileCardTitle);
-  mobileCardTitleRow.appendChild(mobileArrowNext);
   const mobileToggleRow = document.createElement('div');
   mobileToggleRow.className = 'mobile-carousel-toggle-row';
-  mobileDetail.appendChild(mobileDots);
-  mobileDetail.appendChild(mobileCardTitleRow);
-  mobileDetail.appendChild(mobileToggleRow);
+  mobileCard.appendChild(mobileCardTitle);
+  mobileCard.appendChild(mobileToggleRow);
+
+  const mobileContext = document.createElement('div');
+  mobileContext.className = 'mobile-carousel-context';
+
+  mobileDetail.appendChild(mobileNav);
+  mobileDetail.appendChild(mobileCard);
+  mobileDetail.appendChild(mobileContext);
 
   let mobileDetailMoved = [];
   let mobileOpenGroup = null;
   let mobileGroupDecisions = [];
   let mobileGroupIndex = 0;
 
-  function moveIntoMobileDetail(el) {
+  function moveInto(el, container) {
     if (!el) return;
     mobileDetailMoved.push({ el, parent: el.parentNode, next: el.nextSibling });
-    mobileDetail.appendChild(el);
+    container.appendChild(el);
   }
 
   function restoreMovedContent() {
@@ -301,9 +323,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 150);
   }
 
+  function getDecisionLabel(decisionId) {
+    if (!decisionId) return '';
+    const railItemEl = frame.querySelector(`.rail-item[data-decision="${decisionId}"]`);
+    return railItemEl ? railItemEl.querySelector('.rail-label').textContent : '';
+  }
+
   function updateMobileArrows() {
-    mobileArrowPrev.disabled = mobileGroupIndex <= 0;
-    mobileArrowNext.disabled = mobileGroupIndex >= mobileGroupDecisions.length - 1;
+    const hasPrev = mobileGroupIndex > 0;
+    const hasNext = mobileGroupIndex < mobileGroupDecisions.length - 1;
+    mobileArrowPrev.disabled = !hasPrev;
+    mobileArrowNext.disabled = !hasNext;
+    mobileNavPrevLabel.textContent = hasPrev ? getDecisionLabel(mobileGroupDecisions[mobileGroupIndex - 1]) : '';
+    mobileNavNextLabel.textContent = hasNext ? getDecisionLabel(mobileGroupDecisions[mobileGroupIndex + 1]) : '';
   }
 
   function buildMobileDots() {
@@ -331,11 +363,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     mobileCardTitle.textContent = railItemEl ? railItemEl.querySelector('.rail-label').textContent : '';
 
-    moveIntoMobileDetail(compareToggle);
-    moveIntoMobileDetail(mainBlank);
-    moveIntoMobileDetail(calloutCenter);
-    moveIntoMobileDetail(lowerView);
-    mobileToggleRow.appendChild(compareToggle);
+    moveInto(compareToggle, mobileToggleRow);
+    moveInto(mainBlank, mobileCard);
+    moveInto(calloutCenter, mobileCard);
+    moveInto(lowerView, mobileContext);
 
     mainBlank.classList.remove('is-hidden');
     if (calloutCenter) calloutCenter.classList.remove('is-hidden');
