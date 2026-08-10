@@ -99,6 +99,10 @@ img, video {
   color: var(--pp-teal);
 }
 
+.header-logo {
+  display: none;
+}
+
 .header-subtitle {
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-weight: 400;
@@ -108,6 +112,10 @@ img, video {
   text-align: center;
   white-space: nowrap;
   margin: 16px 0;
+}
+
+.header-subtitle-mobile {
+  display: none;
 }
 
 
@@ -122,6 +130,10 @@ img, video {
   border-bottom: 2px solid var(--pp-teal);
   border-radius: 0;
   box-shadow: 0 16px 32px -12px rgba(0, 0, 0, 0.4);
+}
+
+.info-bar-mobile {
+  display: none;
 }
 
 .info-bar-inner {
@@ -1275,4 +1287,195 @@ img, video {
   display: block;
   width: 20px;
   height: 20px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE (<= 768px)
+═══════════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .site-header,
+  .hero,
+  .overview-section,
+  .key-decisions-section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .header-title {
+    display: none;
+  }
+
+  .header-logo {
+    display: block;
+    /* 36px tall at a 320px floor, scaling up to 56px at the 768px mobile ceiling */
+    height: clamp(36px, 21.71px + 4.464vw, 56px);
+  }
+
+  .header-subtitle {
+    display: none;
+  }
+
+  .header-subtitle-mobile {
+    display: block;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: 0.2px;
+    color: black;
+    text-align: left;
+    margin: 16px 0 0;
+  }
+
+  .hero-image {
+    padding-left: 8px;
+    box-sizing: border-box;
+  }
+
+  .info-bar {
+    display: none;
+  }
+
+  .info-bar-mobile {
+    display: block;
+    align-self: stretch;
+    width: auto;
+    margin: 16px calc(-50vw + 50%) 0;
+    padding: 8px 20px;
+    background: var(--pp-teal-bg);
+    border-top: 2px solid var(--pp-teal);
+    border-bottom: 2px solid var(--pp-teal);
+    box-shadow: 0 8px 24px -16px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+  }
+
+  .info-label {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    letter-spacing: 0.08em;
+  }
+
+  .overview-section--reflection .section-title {
+    display: none;
+  }
+
+  .section-title {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    margin-left: -50vw;
+    margin-bottom: 8px;
+    gap: 6px;
+  }
+
+  .title-line {
+    flex: 1;
+    width: auto;
+  }
+
+  .section-heading {
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: 0.2px;
+    white-space: normal;
+  }
+
+  .overview-summary {
+    font-size: 16px;
+    line-height: 26px;
+  }
+
+  /* ─── Key Decisions: rail/main/side-column becomes a stacked accordion ─── */
+  .key-decisions-frame {
+    border: none;
+    background: transparent;
+  }
+
+  .key-decisions-header {
+    display: none;
+  }
+
+  .key-decisions-body {
+    display: block;
+  }
+
+  .key-decisions-frame .rail {
+    width: 100%;
+    border-right: none;
+    background: transparent;
+  }
+
+  .rail-nav {
+    height: auto;
+    overflow: visible;
+    padding: 0;
+  }
+
+  .rail-item {
+    border: 1px solid #334155;
+    border-radius: 10px;
+    margin-bottom: 8px;
+  }
+
+  .rail-item.is-mobile-expanded {
+    border-color: rgba(56, 171, 172, 0.5);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .key-decisions-frame .main-panel {
+    display: none;
+  }
+
+  /* the default "Resolved" status card is shown once, statically, above the rail */
+  .key-decisions-frame .side-column {
+    width: 100%;
+    border-left: none;
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .side-column-view--blank {
+    display: none !important;
+  }
+
+  .side-column-view--default {
+    position: static;
+    height: auto;
+    overflow: visible;
+    border: 1px solid #475569;
+    border-radius: 10px;
+  }
+
+  .key-decisions-lower-panel {
+    display: none !important;
+  }
+
+  /* populated by JS: moves the active decision's image/context/issues in beneath its rail item */
+  .mobile-decision-detail {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 16px;
+    margin: -8px 0 8px;
+    border: 1px solid #334155;
+    border-top: none;
+    border-radius: 0 0 10px 10px;
+    background: var(--pp-navy);
+  }
+
+  .mobile-decision-detail .main-panel-view--blank {
+    height: 240px;
+    margin-bottom: 16px;
+  }
+
+  .mobile-decision-detail .lower-panel-content {
+    padding: 0 0 16px;
+  }
+
+  .mobile-decision-detail .label-callout-center {
+    padding-top: 16px;
+    border-top: 1px solid #334155;
+  }
 }

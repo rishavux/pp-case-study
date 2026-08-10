@@ -28,6 +28,17 @@
   <!-- ═══════════════════════════════ HEADER ═══════════════════════════════ -->
   <header class="site-header">
     <h1 class="header-title">PropertyPixel — UX Audit &amp; UI Redesign</h1>
+    <img class="header-logo" src="Icons/Full Logo.svg" alt="PropertyPixel" />
+
+    <!-- mobile-only trimmed info bar (desktop version is the full one below) -->
+    <section class="info-bar-mobile">
+      <div class="info-bar-inner">
+        <div class="info-item">
+          <span class="info-label">UX Audit &amp; UI Redesign</span>
+        </div>
+      </div>
+    </section>
+
     <p class="header-subtitle">PropertyPixel is an AI SaaS that turns property photos into listing ready content.</p>
   </header>
 
@@ -51,7 +62,11 @@
 
   <!-- ═══════════════════════════════ HERO ═══════════════════════════════ -->
   <section class="hero">
-    <img class="hero-image" src="Screenshots/Hero Image.png" alt="Property Pixel Studio and landing page shown across desktop, tablet, and mobile" />
+    <picture>
+      <source media="(max-width: 768px)" srcset="Icons/mobile%20image.png">
+      <img class="hero-image" src="Screenshots/Hero Image.png" alt="Property Pixel Studio and landing page shown across desktop, tablet, and mobile" />
+    </picture>
+    <p class="header-subtitle-mobile">PropertyPixel is an AI SaaS that turns property photos into listing ready content.</p>
   </section>
 
   <!-- ═══════════════════════════ PROJECT OVERVIEW ═══════════════════════════ -->

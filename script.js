@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const rail = frame.querySelector('.rail');
   const railItems = frame.querySelectorAll('.rail-item');
   const railSequence = Array.from(railItems);
-  const triggers = section.querySelectorAll('[data-decision]');
+  const triggers = section.querySelectorAll('.rail-item, .group-card');
   const lowerPanel = section.querySelector('.key-decisions-lower-panel');
   const lowerPanelViews = section.querySelectorAll('.lower-panel-view');
   const resetButton = document.querySelector('[data-action="reset"]');
@@ -16,6 +16,27 @@ document.addEventListener('DOMContentLoaded', () => {
   const decisionTitle = document.getElementById('decisionTitle');
   const navPrevBtn = document.querySelector('.key-decisions-nav-btn--prev');
   const navNextBtn = document.querySelector('.key-decisions-nav-btn--next');
+
+  const mobileQuery = window.matchMedia('(max-width: 768px)');
+  const mobileDetail = document.createElement('div');
+  mobileDetail.className = 'mobile-decision-detail';
+  let mobileDetailMoved = [];
+  let mobileExpandedItem = null;
+
+  function moveIntoMobileDetail(el) {
+    if (!el) return;
+    mobileDetailMoved.push({ el, parent: el.parentNode, next: el.nextSibling });
+    mobileDetail.appendChild(el);
+  }
+
+  function restoreMobileDetail() {
+    mobileDetailMoved.forEach(({ el, parent, next }) => {
+      parent.insertBefore(el, next);
+      el.classList.add('is-hidden');
+    });
+    mobileDetailMoved = [];
+    if (mobileDetail.parentNode) mobileDetail.parentNode.removeChild(mobileDetail);
+  }
 
   const compareFrame = document.getElementById('visualProofFrame');
   const compareSkeleton = compareFrame.querySelector('.compare-image-skeleton');
@@ -259,7 +280,53 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 150);
   }
 
+  function showDecisionAtMobileIndex(index) {
+    const railItemEl = railSequence[index];
+    if (!railItemEl) return;
+
+    const decisionId = railItemEl.dataset.decision || null;
+    const alreadyExpanded = railItemEl === mobileExpandedItem;
+
+    restoreMobileDetail();
+    railItems.forEach((item) => item.classList.remove('is-active', 'is-mobile-expanded'));
+
+    if (alreadyExpanded) {
+      mobileExpandedItem = null;
+      currentIndex = -1;
+      currentDecisionId = null;
+      delete section.dataset.activeDecision;
+      return;
+    }
+
+    railItemEl.classList.add('is-active', 'is-mobile-expanded');
+    mobileExpandedItem = railItemEl;
+    currentIndex = index;
+    currentDecisionId = decisionId;
+    section.dataset.activeDecision = decisionId || '';
+
+    const lowerView = Array.from(lowerPanelViews).find((view) => view.dataset.decision === decisionId);
+    const calloutCenter = Array.from(labelCalloutCenters).find((el) => el.dataset.decision === decisionId);
+
+    moveIntoMobileDetail(mainBlank);
+    moveIntoMobileDetail(lowerView);
+    moveIntoMobileDetail(calloutCenter);
+    mainBlank.classList.remove('is-hidden');
+    if (lowerView) lowerView.classList.remove('is-hidden');
+    if (calloutCenter) calloutCenter.classList.remove('is-hidden');
+
+    railItemEl.insertAdjacentElement('afterend', mobileDetail);
+
+    setCompareState('before');
+    preloadCompareImages(decisionId);
+    railItemEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
   function showDecisionAtIndex(index) {
+    if (mobileQuery.matches) {
+      showDecisionAtMobileIndex(index);
+      return;
+    }
+
     const railItemEl = railSequence[index];
     if (!railItemEl) return;
 
@@ -325,6 +392,16 @@ document.addEventListener('DOMContentLoaded', () => {
       delete section.dataset.activeDecision;
     });
   }
+
+  mobileQuery.addEventListener('change', () => {
+    restoreMobileDetail();
+    railItems.forEach((item) => item.classList.remove('is-active', 'is-mobile-expanded'));
+    mobileExpandedItem = null;
+    currentIndex = -1;
+    currentDecisionId = null;
+    delete section.dataset.activeDecision;
+    showDefault();
+  });
 
   triggers.forEach((trigger) => {
     trigger.addEventListener('click', () => showDecision(trigger.dataset.decision));
