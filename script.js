@@ -17,11 +17,33 @@ document.addEventListener('DOMContentLoaded', () => {
   const navPrevBtn = document.querySelector('.key-decisions-nav-btn--prev');
   const navNextBtn = document.querySelector('.key-decisions-nav-btn--next');
 
+  const compareToggle = frame.querySelector('.compare-toggle');
+  const groupLabelButtons = Array.from(frame.querySelectorAll('.rail-group-label'));
+  const mobileArrowPrev = frame.querySelector('.mobile-carousel-arrow--prev');
+  const mobileArrowNext = frame.querySelector('.mobile-carousel-arrow--next');
+
   const mobileQuery = window.matchMedia('(max-width: 768px)');
   const mobileDetail = document.createElement('div');
-  mobileDetail.className = 'mobile-decision-detail';
+  mobileDetail.className = 'mobile-carousel-detail';
+  const mobileDots = document.createElement('div');
+  mobileDots.className = 'mobile-carousel-dots';
+  const mobileCardTitleRow = document.createElement('div');
+  mobileCardTitleRow.className = 'mobile-carousel-title-row';
+  const mobileCardTitle = document.createElement('h3');
+  mobileCardTitle.className = 'mobile-carousel-title';
+  mobileCardTitleRow.appendChild(mobileArrowPrev);
+  mobileCardTitleRow.appendChild(mobileCardTitle);
+  mobileCardTitleRow.appendChild(mobileArrowNext);
+  const mobileToggleRow = document.createElement('div');
+  mobileToggleRow.className = 'mobile-carousel-toggle-row';
+  mobileDetail.appendChild(mobileDots);
+  mobileDetail.appendChild(mobileCardTitleRow);
+  mobileDetail.appendChild(mobileToggleRow);
+
   let mobileDetailMoved = [];
-  let mobileExpandedItem = null;
+  let mobileOpenGroup = null;
+  let mobileGroupDecisions = [];
+  let mobileGroupIndex = 0;
 
   function moveIntoMobileDetail(el) {
     if (!el) return;
@@ -29,13 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
     mobileDetail.appendChild(el);
   }
 
-  function restoreMobileDetail() {
+  function restoreMovedContent() {
     mobileDetailMoved.forEach(({ el, parent, next }) => {
       parent.insertBefore(el, next);
       el.classList.add('is-hidden');
     });
     mobileDetailMoved = [];
-    if (mobileDetail.parentNode) mobileDetail.parentNode.removeChild(mobileDetail);
   }
 
   const compareFrame = document.getElementById('visualProofFrame');
@@ -280,53 +301,96 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 150);
   }
 
-  function showDecisionAtMobileIndex(index) {
-    const railItemEl = railSequence[index];
-    if (!railItemEl) return;
+  function updateMobileArrows() {
+    mobileArrowPrev.disabled = mobileGroupIndex <= 0;
+    mobileArrowNext.disabled = mobileGroupIndex >= mobileGroupDecisions.length - 1;
+  }
 
-    const decisionId = railItemEl.dataset.decision || null;
-    const alreadyExpanded = railItemEl === mobileExpandedItem;
+  function buildMobileDots() {
+    mobileDots.innerHTML = '';
+    mobileDots.classList.toggle('is-hidden', mobileGroupDecisions.length <= 1);
+    mobileGroupDecisions.forEach(() => {
+      const dot = document.createElement('span');
+      dot.className = 'mobile-carousel-dot';
+      mobileDots.appendChild(dot);
+    });
+  }
 
-    restoreMobileDetail();
-    railItems.forEach((item) => item.classList.remove('is-active', 'is-mobile-expanded'));
+  function updateMobileDots() {
+    Array.from(mobileDots.children).forEach((dot, i) => {
+      dot.classList.toggle('is-active', i === mobileGroupIndex);
+    });
+  }
 
-    if (alreadyExpanded) {
-      mobileExpandedItem = null;
-      currentIndex = -1;
-      currentDecisionId = null;
-      delete section.dataset.activeDecision;
-      return;
-    }
-
-    railItemEl.classList.add('is-active', 'is-mobile-expanded');
-    mobileExpandedItem = railItemEl;
-    currentIndex = index;
-    currentDecisionId = decisionId;
-    section.dataset.activeDecision = decisionId || '';
+  function populateMobileCard(decisionId) {
+    restoreMovedContent();
 
     const lowerView = Array.from(lowerPanelViews).find((view) => view.dataset.decision === decisionId);
     const calloutCenter = Array.from(labelCalloutCenters).find((el) => el.dataset.decision === decisionId);
+    const railItemEl = frame.querySelector(`.rail-item[data-decision="${decisionId}"]`);
 
+    mobileCardTitle.textContent = railItemEl ? railItemEl.querySelector('.rail-label').textContent : '';
+
+    moveIntoMobileDetail(compareToggle);
     moveIntoMobileDetail(mainBlank);
-    moveIntoMobileDetail(lowerView);
     moveIntoMobileDetail(calloutCenter);
+    moveIntoMobileDetail(lowerView);
+    mobileToggleRow.appendChild(compareToggle);
+
     mainBlank.classList.remove('is-hidden');
-    if (lowerView) lowerView.classList.remove('is-hidden');
     if (calloutCenter) calloutCenter.classList.remove('is-hidden');
+    if (lowerView) lowerView.classList.remove('is-hidden');
 
-    railItemEl.insertAdjacentElement('afterend', mobileDetail);
-
+    currentDecisionId = decisionId;
+    section.dataset.activeDecision = decisionId || '';
     setCompareState('before');
     preloadCompareImages(decisionId);
-    railItemEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  function showMobileCardAtIndex(index) {
+    if (index < 0 || index >= mobileGroupDecisions.length) return;
+    mobileDetail.classList.add('is-crossfading');
+    window.setTimeout(() => {
+      mobileGroupIndex = index;
+      populateMobileCard(mobileGroupDecisions[index]);
+      updateMobileArrows();
+      updateMobileDots();
+      mobileDetail.classList.remove('is-crossfading');
+    }, 150);
+  }
+
+  function closeMobileGroup() {
+    if (!mobileOpenGroup) return;
+    clearAutoCycle();
+    restoreMovedContent();
+    if (mobileDetail.parentNode) mobileDetail.parentNode.removeChild(mobileDetail);
+    mobileOpenGroup.classList.remove('is-mobile-expanded');
+    mobileOpenGroup = null;
+    mobileGroupDecisions = [];
+    mobileGroupIndex = 0;
+    currentDecisionId = null;
+    delete section.dataset.activeDecision;
+  }
+
+  function openMobileGroup(groupEl) {
+    if (mobileOpenGroup === groupEl) {
+      closeMobileGroup();
+      return;
+    }
+    if (mobileOpenGroup) closeMobileGroup();
+
+    mobileGroupDecisions = Array.from(groupEl.querySelectorAll('.rail-item')).map((el) => el.dataset.decision);
+    if (!mobileGroupDecisions.length) return;
+
+    mobileOpenGroup = groupEl;
+    groupEl.classList.add('is-mobile-expanded');
+    groupEl.appendChild(mobileDetail);
+    buildMobileDots();
+    showMobileCardAtIndex(0);
+    groupEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
 
   function showDecisionAtIndex(index) {
-    if (mobileQuery.matches) {
-      showDecisionAtMobileIndex(index);
-      return;
-    }
-
     const railItemEl = railSequence[index];
     if (!railItemEl) return;
 
@@ -394,12 +458,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   mobileQuery.addEventListener('change', () => {
-    restoreMobileDetail();
-    railItems.forEach((item) => item.classList.remove('is-active', 'is-mobile-expanded'));
-    mobileExpandedItem = null;
-    currentIndex = -1;
-    currentDecisionId = null;
-    delete section.dataset.activeDecision;
+    closeMobileGroup();
     showDefault();
   });
 
@@ -415,6 +474,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
   navNextBtn.addEventListener('click', () => {
     if (currentIndex >= 0 && currentIndex < railSequence.length - 1) showDecisionAtIndex(currentIndex + 1);
+  });
+
+  groupLabelButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      if (!mobileQuery.matches) return;
+      const groupEl = button.closest('.rail-group');
+      if (groupEl) openMobileGroup(groupEl);
+    });
+  });
+
+  mobileArrowPrev.addEventListener('click', () => showMobileCardAtIndex(mobileGroupIndex - 1));
+  mobileArrowNext.addEventListener('click', () => showMobileCardAtIndex(mobileGroupIndex + 1));
+
+  let mobileTouchStartX = 0;
+  let mobileTouchStartY = 0;
+  let mobileTouchTracking = false;
+
+  mobileDetail.addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1) return;
+    mobileTouchStartX = e.touches[0].clientX;
+    mobileTouchStartY = e.touches[0].clientY;
+    mobileTouchTracking = true;
+  }, { passive: true });
+
+  mobileDetail.addEventListener('touchend', (e) => {
+    if (!mobileTouchTracking) return;
+    mobileTouchTracking = false;
+    const touch = e.changedTouches[0];
+    const deltaX = touch.clientX - mobileTouchStartX;
+    const deltaY = touch.clientY - mobileTouchStartY;
+    if (Math.abs(deltaX) < 40 || Math.abs(deltaX) < Math.abs(deltaY)) return;
+    showMobileCardAtIndex(mobileGroupIndex + (deltaX < 0 ? 1 : -1));
   });
 
   compareButtons.forEach((button) => {
