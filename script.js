@@ -378,16 +378,55 @@ document.addEventListener('DOMContentLoaded', () => {
     preloadCompareImages(decisionId);
   }
 
+  function applyMobileCard(index) {
+    mobileGroupIndex = index;
+    populateMobileCard(mobileGroupDecisions[index]);
+    updateMobileArrows();
+    updateMobileDots();
+  }
+
   function showMobileCardAtIndex(index) {
-    if (index < 0 || index >= mobileGroupDecisions.length) return;
-    mobileDetail.classList.add('is-crossfading');
+    if (index < 0 || index >= mobileGroupDecisions.length || index === mobileGroupIndex) return;
+    const exitClass = index > mobileGroupIndex ? 'slide-left' : 'slide-right';
+    const enterClass = index > mobileGroupIndex ? 'slide-right' : 'slide-left';
+
+    mobileCard.classList.add(exitClass);
     window.setTimeout(() => {
-      mobileGroupIndex = index;
-      populateMobileCard(mobileGroupDecisions[index]);
-      updateMobileArrows();
-      updateMobileDots();
-      mobileDetail.classList.remove('is-crossfading');
-    }, 150);
+      applyMobileCard(index);
+
+      mobileCard.classList.add('slide-instant');
+      mobileCard.classList.remove(exitClass);
+      mobileCard.classList.add(enterClass);
+      void mobileCard.offsetWidth;
+      mobileCard.classList.remove('slide-instant');
+
+      requestAnimationFrame(() => {
+        mobileCard.classList.remove(enterClass);
+      });
+    }, 200);
+  }
+
+  function expandMobileDetail(el) {
+    const targetHeight = el.scrollHeight;
+    el.style.transition = 'none';
+    el.style.overflow = 'hidden';
+    el.style.height = '0px';
+    el.style.opacity = '0';
+    el.getBoundingClientRect();
+    el.style.transition = 'height 260ms ease-out, opacity 260ms ease-out';
+    requestAnimationFrame(() => {
+      el.style.height = targetHeight + 'px';
+      el.style.opacity = '1';
+    });
+    const onEnd = (e) => {
+      if (e.target !== el || e.propertyName !== 'height') return;
+      el.style.height = '';
+      el.style.opacity = '';
+      el.style.overflow = '';
+      el.style.transition = '';
+      el.removeEventListener('transitionend', onEnd);
+    };
+    el.addEventListener('transitionend', onEnd);
   }
 
   function closeMobileGroup() {
@@ -417,8 +456,11 @@ document.addEventListener('DOMContentLoaded', () => {
     groupEl.classList.add('is-mobile-expanded');
     groupEl.appendChild(mobileDetail);
     buildMobileDots();
-    showMobileCardAtIndex(0);
-    groupEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    applyMobileCard(0);
+    expandMobileDetail(mobileDetail);
+
+    const targetY = window.scrollY + groupEl.getBoundingClientRect().top - 12;
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
   }
 
   function showDecisionAtIndex(index) {
@@ -548,7 +590,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightboxCloseBtn = lightbox.querySelector('.image-lightbox-close');
   let scrollLockY = 0;
 
-  function openLightbox(src, alt) {
+  // mobile-only glowing cue, shown briefly in the lightbox when the opened image is landscape
+  const mobileRotateHint = document.createElement('div');
+  mobileRotateHint.className = 'mobile-rotate-hint';
+  mobileRotateHint.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg><span>Rotate for full view</span>';
+  lightbox.appendChild(mobileRotateHint);
+  let rotateHintTimer = null;
+
+  function showRotateHintIfLandscape(sourceEl) {
+    window.clearTimeout(rotateHintTimer);
+    mobileRotateHint.classList.remove('is-visible');
+    if (!sourceEl || !mobileQuery.matches) return;
+    if (sourceEl.naturalWidth <= sourceEl.naturalHeight) return;
+    void mobileRotateHint.offsetWidth;
+    mobileRotateHint.classList.add('is-visible');
+    rotateHintTimer = window.setTimeout(() => {
+      mobileRotateHint.classList.remove('is-visible');
+    }, 3000);
+  }
+
+  function openLightbox(src, alt, sourceEl) {
     lightboxImage.src = src;
     lightboxImage.alt = alt || '';
     lightbox.classList.add('is-open');
@@ -558,6 +619,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.style.position = 'fixed';
     document.body.style.top = `-${scrollLockY}px`;
     document.body.style.width = '100%';
+
+    showRotateHintIfLandscape(sourceEl);
   }
 
   function closeLightbox() {
@@ -565,6 +628,8 @@ document.addEventListener('DOMContentLoaded', () => {
     lightbox.setAttribute('aria-hidden', 'true');
     lightboxImage.src = '';
     lightboxImage.alt = '';
+    window.clearTimeout(rotateHintTimer);
+    mobileRotateHint.classList.remove('is-visible');
 
     document.body.style.position = '';
     document.body.style.top = '';
@@ -575,7 +640,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('click', (e) => {
     const zoomTarget = e.target.closest('.zoomable-image');
     if (zoomTarget) {
-      openLightbox(zoomTarget.currentSrc || zoomTarget.src, zoomTarget.alt);
+      openLightbox(zoomTarget.currentSrc || zoomTarget.src, zoomTarget.alt, zoomTarget);
     }
   });
 

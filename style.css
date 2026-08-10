@@ -561,7 +561,8 @@ img, video {
 }
 
 .mobile-carousel-arrow,
-.mobile-carousel-tap-hint {
+.mobile-carousel-tap-hint,
+.mobile-rotate-hint {
   display: none;
 }
 
@@ -1464,7 +1465,7 @@ img, video {
     box-sizing: border-box;
     margin-left: calc(-50vw + 50%);
     margin-right: calc(-50vw + 50%);
-    padding: 36px 20px;
+    padding: 22px 20px;
     border: none;
     background: var(--pp-navy);
   }
@@ -1587,7 +1588,8 @@ img, video {
   }
 
   /* populated by JS: holds the open category's decisions as a swipeable one-card-at-a-time carousel */
-  /* outer wrap: nav row + card + context, stacked below the group button */
+  /* outer wrap: nav row + card + context, stacked below the group button.
+     height/opacity are animated inline by expandMobileDetail() on open. */
   .mobile-carousel-wrap {
     display: flex;
     flex-direction: column;
@@ -1599,7 +1601,6 @@ img, video {
     padding-bottom: 24px;
     border-bottom: 1px solid #334155;
     touch-action: pan-y;
-    transition: opacity 150ms ease;
   }
 
   /* un-bordered arrows + dots row, sits above the card */
@@ -1683,11 +1684,27 @@ img, video {
     align-items: center;
     width: 100%;
     box-sizing: border-box;
-    padding: 10px 0;
+    padding: 24px 0;
     border: 1px solid #334155;
     border-radius: 12px;
     background: rgba(15, 23, 42, 0.4);
     overflow: hidden;
+    transition: transform 200ms ease, opacity 200ms ease;
+  }
+
+  /* decision switch (arrows/swipe): outgoing card exits one side, incoming card enters from the other */
+  .mobile-carousel-card.slide-left {
+    transform: translateX(-24px);
+    opacity: 0;
+  }
+
+  .mobile-carousel-card.slide-right {
+    transform: translateX(24px);
+    opacity: 0;
+  }
+
+  .mobile-carousel-card.slide-instant {
+    transition: none;
   }
 
   .mobile-carousel-title {
@@ -1704,7 +1721,7 @@ img, video {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
 
   .mobile-carousel-toggle-row .compare-toggle {
@@ -1759,6 +1776,49 @@ img, video {
     pointer-events: none;
   }
 
+  /* glowing toast in the lightbox, shown briefly (see showRotateHintIfLandscape in script.js)
+     when the opened image is wider than it is tall */
+  .mobile-rotate-hint {
+    display: flex;
+    position: absolute;
+    left: 50%;
+    bottom: 56px;
+    z-index: 5;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: rgba(20, 122, 123, 0.35);
+    border: 1px solid rgba(56, 171, 172, 0.6);
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(8px);
+    transition: opacity 250ms ease, transform 250ms ease;
+  }
+
+  .mobile-rotate-hint.is-visible {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    animation: rotate-hint-glow 1.4s ease-in-out infinite;
+  }
+
+  @keyframes rotate-hint-glow {
+    0%, 100% { box-shadow: 0 0 5px 0 rgba(56, 171, 172, 0.2); }
+    50% { box-shadow: 0 0 10px 1px rgba(56, 171, 172, 0.35); }
+  }
+
+  @media (orientation: landscape) {
+    .mobile-rotate-hint.is-visible {
+      opacity: 0;
+      animation: none;
+    }
+  }
+
   .mobile-carousel-card .label-callout-center {
     padding: 0 20px;
     box-sizing: border-box;
@@ -1809,5 +1869,20 @@ img, video {
     font-size: 14px;
     line-height: 1.5;
     color: #94a3b8;
+  }
+
+  /* lightbox: every image (portrait or landscape) renders at 90vw; vw is viewport-relative
+     so this recomputes automatically on rotation without any extra orientation rule */
+  .image-lightbox {
+    padding: 24px 16px;
+    overflow-y: auto;
+  }
+
+  .image-lightbox-image {
+    width: 90vw;
+    max-width: 90vw;
+    height: auto;
+    max-height: none;
+    margin: auto;
   }
 }
