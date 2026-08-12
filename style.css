@@ -87,7 +87,7 @@ img, video {
   flex-direction: column;
   align-items: center;
   gap: 16px;
-  padding: 40px 116px 0;
+  padding: 64px 116px 0;
 }
 
 .header-title {
