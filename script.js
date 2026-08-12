@@ -89,42 +89,42 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   const decisionImages = {
     'visual-proof': {
-      before: { src: 'Before & After/Before Visual Proof.png', alt: 'Property Pixel landing page hero, before redesign' },
-      after: { src: 'Before & After/After Visual Proof.png', alt: 'Property Pixel landing page hero, after redesign' },
+      before: { src: 'Before & After/Before Visual Proof.webp', alt: 'Property Pixel landing page hero, before redesign' },
+      after: { src: 'Before & After/After Visual Proof.webp', alt: 'Property Pixel landing page hero, after redesign' },
     },
     'web-experience': {
-      before: { src: 'Before & After/Studio Web Before.png', alt: 'Property Pixel web product demo, before redesign' },
-      after: { src: 'Before & After/Studio Web After.png', alt: 'Property Pixel web product demo, after redesign' },
+      before: { src: 'Before & After/Studio Web Before.webp', alt: 'Property Pixel web product demo, before redesign' },
+      after: { src: 'Before & After/Studio Web After.webp', alt: 'Property Pixel web product demo, after redesign' },
     },
     'mobile-demo': {
-      before: { src: 'Before & After/studio mobile before.png', alt: 'Property Pixel mobile product demo, before redesign' },
-      after: { src: 'Before & After/studio mobile after.png', alt: 'Property Pixel mobile product demo, after redesign' },
+      before: { src: 'Before & After/studio mobile before.webp', alt: 'Property Pixel mobile product demo, before redesign' },
+      after: { src: 'Before & After/studio mobile after.webp', alt: 'Property Pixel mobile product demo, after redesign' },
     },
     'credits': {
-      before: { src: 'Before & After/current plan before.png', alt: 'Property Pixel billing current plan, before redesign' },
-      after: { src: 'Before & After/current plan after.png', alt: 'Property Pixel billing current plan, after redesign' },
+      before: { src: 'Before & After/current plan before.webp', alt: 'Property Pixel billing current plan, before redesign' },
+      after: { src: 'Before & After/current plan after.webp', alt: 'Property Pixel billing current plan, after redesign' },
     },
     'subscriptions': {
-      before: { src: 'Before & After/subscription before.png', alt: 'Property Pixel subscriptions panel, before redesign' },
-      after: { src: 'Before & After/subscription after.png', alt: 'Property Pixel subscriptions panel, after redesign' },
+      before: { src: 'Before & After/subscription before.webp', alt: 'Property Pixel subscriptions panel, before redesign' },
+      after: { src: 'Before & After/subscription after.webp', alt: 'Property Pixel subscriptions panel, after redesign' },
     },
     'ai-suggestions': {
-      before: { src: 'Before & After/Ai Suggestion Updated Before.png', alt: 'Property Pixel AI suggestions overlay, before redesign' },
-      after: { src: 'Before & After/AI Suggestion After - web.png', alt: 'Property Pixel AI suggestions overlay, after redesign' },
+      before: { src: 'Before & After/Ai Suggestion Updated Before.webp', alt: 'Property Pixel AI suggestions overlay, before redesign' },
+      after: { src: 'Before & After/AI Suggestion After - web.webp', alt: 'Property Pixel AI suggestions overlay, after redesign' },
     },
     'activity-panel': {
-      before: { src: 'Before & After/Activity Panel after.png', alt: 'Property Pixel activity panel, before redesign' },
-      after: { src: 'Before & After/Activity Panel before.png', alt: 'Property Pixel activity panel, after redesign' },
+      before: { src: 'Before & After/Activity Panel after.webp', alt: 'Property Pixel activity panel, before redesign' },
+      after: { src: 'Before & After/Activity Panel before.webp', alt: 'Property Pixel activity panel, after redesign' },
     },
     'batch-selection': {
-      before: { src: 'Before & After/batch selection before.png', alt: 'Property Pixel batch selection, before redesign' },
-      after: { src: 'Before & After/batch selection after.png', alt: 'Property Pixel batch selection, after redesign' },
+      before: { src: 'Before & After/batch selection before.webp', alt: 'Property Pixel batch selection, before redesign' },
+      after: { src: 'Before & After/batch selection after.webp', alt: 'Property Pixel batch selection, after redesign' },
     },
     'download-panel': {
-      before: { src: 'Before & After/download before.png', alt: 'Property Pixel download panel, before redesign' },
+      before: { src: 'Before & After/download before.webp', alt: 'Property Pixel download panel, before redesign' },
       after: [
-        { src: 'Before & After/download after 1.png', alt: 'Property Pixel download panel list view, after redesign' },
-        { src: 'Before & After/download after 2.png', alt: 'Property Pixel download panel preview mode, after redesign' },
+        { src: 'Before & After/download after 1.webp', alt: 'Property Pixel download panel list view, after redesign' },
+        { src: 'Before & After/download after 2.webp', alt: 'Property Pixel download panel preview mode, after redesign' },
       ],
     },
   };
@@ -429,17 +429,64 @@ document.addEventListener('DOMContentLoaded', () => {
     el.addEventListener('transitionend', onEnd);
   }
 
-  function closeMobileGroup() {
-    if (!mobileOpenGroup) return;
+  function collapseMobileDetail(el, onComplete) {
+    const startHeight = el.scrollHeight;
+    if (startHeight === 0) {
+      if (onComplete) onComplete();
+      return;
+    }
+    el.style.transition = 'none';
+    el.style.overflow = 'hidden';
+    el.style.height = startHeight + 'px';
+    el.style.opacity = '1';
+    el.getBoundingClientRect();
+    el.style.transition = 'height 260ms ease-out, opacity 260ms ease-out';
+    requestAnimationFrame(() => {
+      el.style.height = '0px';
+      el.style.opacity = '0';
+    });
+    const onEnd = (e) => {
+      if (e.target !== el || e.propertyName !== 'height') return;
+      el.style.height = '';
+      el.style.opacity = '';
+      el.style.overflow = '';
+      el.style.transition = '';
+      el.removeEventListener('transitionend', onEnd);
+      if (onComplete) onComplete();
+    };
+    el.addEventListener('transitionend', onEnd);
+  }
+
+  // instant: skips the slide animation (used on mobile/desktop breakpoint changes, where the
+  // layout itself is switching and an animated collapse would fight the reflow)
+  function closeMobileGroup(onComplete, instant) {
+    if (!mobileOpenGroup) {
+      if (onComplete) onComplete();
+      return;
+    }
     clearAutoCycle();
-    restoreMovedContent();
-    if (mobileDetail.parentNode) mobileDetail.parentNode.removeChild(mobileDetail);
     mobileOpenGroup.classList.remove('is-mobile-expanded');
     mobileOpenGroup = null;
     mobileGroupDecisions = [];
     mobileGroupIndex = 0;
     currentDecisionId = null;
     delete section.dataset.activeDecision;
+
+    const finish = () => {
+      restoreMovedContent();
+      if (mobileDetail.parentNode) mobileDetail.parentNode.removeChild(mobileDetail);
+      if (onComplete) onComplete();
+    };
+
+    if (instant) {
+      mobileDetail.style.transition = '';
+      mobileDetail.style.height = '';
+      mobileDetail.style.opacity = '';
+      mobileDetail.style.overflow = '';
+      finish();
+    } else {
+      collapseMobileDetail(mobileDetail, finish);
+    }
   }
 
   function openMobileGroup(groupEl) {
@@ -447,20 +494,27 @@ document.addEventListener('DOMContentLoaded', () => {
       closeMobileGroup();
       return;
     }
-    if (mobileOpenGroup) closeMobileGroup();
 
-    mobileGroupDecisions = Array.from(groupEl.querySelectorAll('.rail-item')).map((el) => el.dataset.decision);
-    if (!mobileGroupDecisions.length) return;
+    const openNewGroup = () => {
+      mobileGroupDecisions = Array.from(groupEl.querySelectorAll('.rail-item')).map((el) => el.dataset.decision);
+      if (!mobileGroupDecisions.length) return;
 
-    mobileOpenGroup = groupEl;
-    groupEl.classList.add('is-mobile-expanded');
-    groupEl.appendChild(mobileDetail);
-    buildMobileDots();
-    applyMobileCard(0);
-    expandMobileDetail(mobileDetail);
+      mobileOpenGroup = groupEl;
+      groupEl.classList.add('is-mobile-expanded');
+      groupEl.appendChild(mobileDetail);
+      buildMobileDots();
+      applyMobileCard(0);
+      expandMobileDetail(mobileDetail);
 
-    const targetY = window.scrollY + groupEl.getBoundingClientRect().top - 12;
-    window.scrollTo({ top: targetY, behavior: 'smooth' });
+      const targetY = window.scrollY + groupEl.getBoundingClientRect().top - 12;
+      window.scrollTo({ top: targetY, behavior: 'smooth' });
+    };
+
+    if (mobileOpenGroup) {
+      closeMobileGroup(openNewGroup);
+    } else {
+      openNewGroup();
+    }
   }
 
   function showDecisionAtIndex(index) {
@@ -531,7 +585,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   mobileQuery.addEventListener('change', () => {
-    closeMobileGroup();
+    closeMobileGroup(undefined, true);
     showDefault();
   });
 
@@ -590,28 +644,33 @@ document.addEventListener('DOMContentLoaded', () => {
   const lightboxCloseBtn = lightbox.querySelector('.image-lightbox-close');
   let scrollLockY = 0;
 
-  // mobile-only glowing cue, shown briefly in the lightbox when the opened image is landscape
-  const mobileRotateHint = document.createElement('div');
+  // mobile-only button, shown when the opened image is landscape: since most phones require
+  // the OS's auto-rotate to be on to actually rotate the screen, this rotates the image in
+  // place via CSS instead. Stays up until pressed (no auto-hide), then hides itself.
+  const mobileRotateHint = document.createElement('button');
+  mobileRotateHint.type = 'button';
   mobileRotateHint.className = 'mobile-rotate-hint';
-  mobileRotateHint.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg><span>Rotate for full view</span>';
+  mobileRotateHint.setAttribute('aria-label', 'Rotate image for full view');
+  mobileRotateHint.innerHTML = '<svg width="20" height="20" viewBox="644.27 2895.51 4.96 4.96" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M648.969 2898.4V2898.6H648.768V2899H648.566V2899.41H648.365V2899.61H648.163V2899.81H647.76V2900.01H647.357V2900.21H646.148V2900.01H645.745V2899.81H645.342V2899.61H644.939V2899.81H644.738V2900.01H644.536V2898.6H645.947V2898.8H645.745V2899H645.544V2899.41H645.745V2899.61H646.148V2899.81H647.357V2899.61H647.76V2899.41H648.163V2899H648.365V2898.4H648.969Z" fill="currentColor"/><path d="M648.969 2895.98V2897.39H647.559V2897.19H647.76V2896.99H647.962V2896.59H647.76V2896.38H647.357V2896.18H646.148V2896.38H645.745V2896.59H645.342V2896.99H645.141V2897.59H644.536V2897.39H644.738V2896.99H644.939V2896.59H645.141V2896.38H645.342V2896.18H645.745V2895.98H646.148V2895.78H647.357V2895.98H647.76V2896.18H648.163V2896.38H648.566V2896.18H648.768V2895.98H648.969Z" fill="currentColor"/></svg><span>Rotate for full view</span>';
   lightbox.appendChild(mobileRotateHint);
-  let rotateHintTimer = null;
 
   function showRotateHintIfLandscape(sourceEl) {
-    window.clearTimeout(rotateHintTimer);
     mobileRotateHint.classList.remove('is-visible');
     if (!sourceEl || !mobileQuery.matches) return;
     if (sourceEl.naturalWidth <= sourceEl.naturalHeight) return;
     void mobileRotateHint.offsetWidth;
     mobileRotateHint.classList.add('is-visible');
-    rotateHintTimer = window.setTimeout(() => {
-      mobileRotateHint.classList.remove('is-visible');
-    }, 3000);
   }
+
+  mobileRotateHint.addEventListener('click', () => {
+    lightboxImage.classList.add('is-rotated');
+    mobileRotateHint.classList.remove('is-visible');
+  });
 
   function openLightbox(src, alt, sourceEl) {
     lightboxImage.src = src;
     lightboxImage.alt = alt || '';
+    lightboxImage.classList.remove('is-rotated');
     lightbox.classList.add('is-open');
     lightbox.setAttribute('aria-hidden', 'false');
 
@@ -628,7 +687,7 @@ document.addEventListener('DOMContentLoaded', () => {
     lightbox.setAttribute('aria-hidden', 'true');
     lightboxImage.src = '';
     lightboxImage.alt = '';
-    window.clearTimeout(rotateHintTimer);
+    lightboxImage.classList.remove('is-rotated');
     mobileRotateHint.classList.remove('is-visible');
 
     document.body.style.position = '';

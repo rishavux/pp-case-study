@@ -179,7 +179,7 @@ img, video {
   flex-direction: column;
   align-items: center;
   gap: 24px;
-  padding: 40px 116px 0;
+  padding: 56px 116px 32px;
 }
 
 .hero-image {
@@ -198,8 +198,23 @@ img, video {
   padding: 40px 116px 0;
 }
 
+.overview-section:not(.overview-section--reflection) {
+  padding-bottom: 52px;
+}
+
 .overview-section--reflection {
   padding-bottom: 80px;
+}
+
+.overview-section .section-title {
+  margin-bottom: 40px;
+}
+
+.overview-section .section-heading {
+  font-weight: 700;
+  font-size: clamp(15px, 7px + 0.9375vw, 19px);
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
 }
 
 .overview-body {
@@ -214,8 +229,8 @@ img, video {
   flex: 1;
   font-family: 'Plus Jakarta Sans', sans-serif;
   font-weight: 500;
-  font-size: 21px;
-  line-height: 36px;
+  font-size: 17px;
+  line-height: 28px;
   letter-spacing: 0.2px;
   color: black;
 }
@@ -224,14 +239,123 @@ img, video {
   color: var(--pp-teal);
 }
 
+.overview-columns {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 48px;
+  padding: 16px 48px;
+}
+
+.overview-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  width: 336px;
+  padding: 20px 14px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.overview-col--highlight {
+  width: 404px;
+  padding: 18px 12px 20px;
+  background: var(--pp-teal-bg);
+  border: 2px solid var(--pp-teal);
+  border-radius: 24px;
+  box-shadow: inset 0 0 5px 1px rgba(16, 98, 99, 0.12), 0 3px 12px rgba(16, 98, 99, 0.15);
+  animation: overview-highlight-glow 2.8s ease-in-out infinite;
+}
+
+@keyframes overview-highlight-glow {
+  0%, 100% { box-shadow: inset 0 0 5px 1px rgba(16, 98, 99, 0.12), 0 3px 12px rgba(16, 98, 99, 0.15); }
+  50% { box-shadow: inset 0 0 5px 1px rgba(16, 98, 99, 0.12), 0 6px 24px rgba(16, 98, 99, 0.4), 0 0 14px rgba(16, 98, 99, 0.25); }
+}
+
+@keyframes overview-text-shimmer {
+  0% { background-position: 150% center; }
+  100% { background-position: -50% center; }
+}
+
+@keyframes overview-icon-shimmer {
+  0%, 100% { color: var(--pp-teal); }
+  50% { color: #9cdcdd; }
+}
+
+.overview-col-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: var(--pp-teal);
+}
+
+.overview-col-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.overview-col-heading {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.4;
+  color: var(--pp-teal);
+}
+
+.overview-col-text {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--pp-ink);
+}
+
+.overview-col--highlight .overview-col-icon {
+  animation: overview-icon-shimmer 5s ease-in-out infinite;
+}
+
+.overview-col--highlight .overview-col-heading {
+  background: linear-gradient(90deg, var(--pp-teal) 0%, var(--pp-teal) 38%, #9cdcdd 50%, var(--pp-teal) 62%, var(--pp-teal) 100%);
+  background-size: 300% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: overview-text-shimmer 6s linear infinite;
+}
+
+.overview-col--highlight .overview-col-text {
+  font-size: 17px;
+  background: linear-gradient(90deg, var(--pp-ink) 0%, var(--pp-ink) 38%, var(--pp-teal) 50%, var(--pp-ink) 62%, var(--pp-ink) 100%);
+  background-size: 300% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: overview-text-shimmer 6s linear infinite;
+}
+
 
 /* ═══════════════════════════════════════════════════════════
    KEY DECISIONS
 ═══════════════════════════════════════════════════════════ */
+.key-decisions-intro {
+  padding: 52px 116px 52px;
+  border-top: 1px solid var(--pp-teal);
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 19px;
+  line-height: 1.6;
+  letter-spacing: 0.3px;
+  color: var(--pp-teal);
+  text-align: left;
+}
+
 .key-decisions-section {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 24px 116px;
+  padding: 0 116px 24px;
   /* 1 (today's current sizing, unchanged) at the 1280px laptop floor; scales UP from there as the frame widens, capped at ~1.153 once the frame hits its 1440px design max - so desktop gets bigger instead of laptop getting smaller */
   --kd-scale: clamp(1, calc((100vw - 232px) / 1048px), 1.153);
 }
@@ -1294,11 +1418,12 @@ img, video {
   position: absolute;
   top: 24px;
   right: 24px;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 32px;
+  height: 32px;
   border: none;
   border-radius: 8px;
   outline: none;
@@ -1311,8 +1436,8 @@ img, video {
 
 .image-lightbox-close svg {
   display: block;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
 }
 
 
@@ -1326,6 +1451,18 @@ img, video {
   .key-decisions-section {
     padding-left: 20px;
     padding-right: 20px;
+  }
+
+  .key-decisions-section {
+    padding-top: 0;
+  }
+
+  .key-decisions-intro {
+    padding: 40px 20px 0;
+    margin: 0 0 20px;
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: 0.2px;
   }
 
   .header-title {
@@ -1352,6 +1489,10 @@ img, video {
     color: black;
     text-align: left;
     margin: 16px 0 0;
+  }
+
+  .hero {
+    padding-bottom: 16px;
   }
 
   .hero-image {
@@ -1383,10 +1524,6 @@ img, video {
     letter-spacing: 0.08em;
   }
 
-  .overview-section--reflection .section-title {
-    display: none;
-  }
-
   .section-title {
     width: 100vw;
     position: relative;
@@ -1411,6 +1548,79 @@ img, video {
   .overview-summary {
     font-size: 16px;
     line-height: 26px;
+  }
+
+  .overview-section:not(.overview-section--reflection) {
+    padding-top: 16px;
+    padding-bottom: 40px;
+    border-bottom: none;
+  }
+
+  .overview-section .section-title {
+    margin-bottom: 28px;
+  }
+
+  .overview-section .section-heading {
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .overview-columns {
+    flex-direction: column;
+    align-items: center;
+    padding: 0;
+    gap: 20px;
+  }
+
+  .overview-col {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    column-gap: 6px;
+    row-gap: 0;
+    width: 100%;
+    padding: 0 0 0 6px;
+  }
+
+  .overview-col-icon {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: center;
+    width: 32px;
+    height: 32px;
+  }
+
+  .overview-col-heading {
+    grid-column: 2;
+    grid-row: 1;
+    align-self: center;
+    text-align: left;
+    font-size: 16px;
+    line-height: 1.25;
+  }
+
+  .overview-col-text {
+    grid-column: 2;
+    grid-row: 2;
+    text-align: left;
+    font-size: 13px;
+    line-height: 18px;
+    letter-spacing: 0.025em;
+  }
+
+  .overview-col--highlight {
+    width: 100%;
+    align-items: start;
+    margin-top: 8px;
+    padding: 10px 8px 10px 4px;
+    border-radius: 12px;
+    box-shadow: none;
+    animation: none;
+  }
+
+  .overview-col--highlight .overview-col-text {
+    font-size: 13px;
   }
 
   /* ─── Key Decisions: rail/main/side-column becomes a stacked accordion ─── */
@@ -1465,7 +1675,7 @@ img, video {
     box-sizing: border-box;
     margin-left: calc(-50vw + 50%);
     margin-right: calc(-50vw + 50%);
-    padding: 22px 20px;
+    padding: 24px 20px;
     border: none;
     background: var(--pp-navy);
   }
@@ -1744,8 +1954,8 @@ img, video {
   }
 
   .mobile-carousel-card .compare-image-frame {
-    width: 100% !important;
-    max-width: 100% !important;
+    width: 90% !important;
+    max-width: 90% !important;
     height: 100% !important;
     aspect-ratio: unset !important;
     background: var(--pp-navy-panel) !important;
@@ -1776,8 +1986,9 @@ img, video {
     pointer-events: none;
   }
 
-  /* glowing toast in the lightbox, shown briefly (see showRotateHintIfLandscape in script.js)
-     when the opened image is wider than it is tall */
+  /* button in the lightbox (see showRotateHintIfLandscape in script.js), shown whenever the
+     opened image is wider than it is tall: rotates the image via CSS instead of relying on
+     the device's own auto-rotate, and stays up until the user taps it */
   .mobile-rotate-hint {
     display: flex;
     position: absolute;
@@ -1796,6 +2007,8 @@ img, video {
     font-weight: 600;
     white-space: nowrap;
     opacity: 0;
+    appearance: none;
+    cursor: pointer;
     pointer-events: none;
     transform: translateX(-50%) translateY(8px);
     transition: opacity 250ms ease, transform 250ms ease;
@@ -1803,6 +2016,7 @@ img, video {
 
   .mobile-rotate-hint.is-visible {
     opacity: 1;
+    pointer-events: auto;
     transform: translateX(-50%) translateY(0);
     animation: rotate-hint-glow 1.4s ease-in-out infinite;
   }
@@ -1815,6 +2029,7 @@ img, video {
   @media (orientation: landscape) {
     .mobile-rotate-hint.is-visible {
       opacity: 0;
+      pointer-events: none;
       animation: none;
     }
   }
@@ -1884,5 +2099,17 @@ img, video {
     height: auto;
     max-height: none;
     margin: auto;
+  }
+
+  /* triggered by the "Rotate for full view" button: rotates a landscape image 90deg in place.
+     width/max-width are set on the pre-rotation box, so 90vh/90vw swap to become the visible
+     bounding box (90vw tall x 90vh wide) once the transform is applied. */
+  .image-lightbox-image.is-rotated {
+    width: auto;
+    max-width: 90vh;
+    height: auto;
+    max-height: 90vw;
+    transform: rotate(90deg);
+    transition: transform 300ms ease;
   }
 }
