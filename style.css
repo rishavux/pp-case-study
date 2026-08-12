@@ -124,7 +124,7 @@ img, video {
 ═══════════════════════════════════════════════════════════ */
 .info-bar {
   margin: 32px 0 0;
-  padding: 24px 48px;
+  padding: 22px 48px;
   background: var(--pp-teal-bg);
   border-top: 2px solid var(--pp-teal);
   border-bottom: 2px solid var(--pp-teal);
@@ -165,7 +165,7 @@ img, video {
 .info-value {
   font-family: 'Inter', sans-serif;
   font-weight: 400;
-  font-size: 20px;
+  font-size: 18px;
   line-height: 28px;
   color: var(--pp-ink);
 }
