@@ -1486,13 +1486,39 @@ img, video {
     padding-right: 20px;
   }
 
+  .overview-section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .site-header {
+    padding-top: 32px;
+  }
+
   .key-decisions-section {
     padding-top: 0;
+    padding-bottom: 12px;
+  }
+
+  .overview-section--reflection {
+    padding-top: 32px;
+  }
+
+  .key-decisions-title {
+    padding: 0;
+    margin-bottom: 28px;
+  }
+
+  .key-decisions-title .section-heading {
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.8px;
+    text-transform: capitalize;
   }
 
   .key-decisions-intro {
-    padding: 40px 20px 0;
-    margin: 0 0 20px;
+    padding: 24px 20px 0;
+    margin: 0 0 24px;
     font-size: 14px;
     line-height: 1.5;
     letter-spacing: 0.2px;
@@ -1516,16 +1542,19 @@ img, video {
     display: block;
     font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 400;
-    font-size: 20px;
+    font-size: 18px;
     line-height: 28px;
     letter-spacing: 0.2px;
     color: black;
     text-align: left;
     margin: 16px 0 0;
+    padding: 0 8px;
   }
 
   .hero {
+    padding-top: 48px;
     padding-bottom: 16px;
+    gap: 16px;
   }
 
   .hero-image {
@@ -1579,8 +1608,8 @@ img, video {
   }
 
   .overview-summary {
-    font-size: 16px;
-    line-height: 26px;
+    font-size: 14px;
+    line-height: 22px;
   }
 
   .overview-section:not(.overview-section--reflection) {
@@ -1628,8 +1657,8 @@ img, video {
 
   .overview-col-icon {
     flex-shrink: 0;
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
   }
 
   .overview-col-heading {
@@ -1647,13 +1676,13 @@ img, video {
     font-size: 13px;
     line-height: 18px;
     letter-spacing: 0.025em;
+    margin-top: 2px;
   }
 
   .overview-col--highlight {
     width: 100%;
     align-items: start;
-    margin-top: 8px;
-    padding: 10px 8px 20px 4px;
+    padding: 6px 8px 20px 4px;
     border-radius: 12px;
     box-shadow: none;
     animation: none;
@@ -1676,58 +1705,63 @@ img, video {
   /* ─── Key Decisions: rail/main/side-column becomes a stacked accordion ─── */
   .key-decisions-mobile-heading {
     display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 0 0 18px;
-  }
-
-  .key-decisions-mobile-heading-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    width: 48px;
-    height: 48px;
-    color: #94a3b8;
-  }
-
-  .key-decisions-mobile-heading-icon svg {
-    width: 30px;
-    height: 30px;
-  }
-
-  .key-decisions-mobile-heading-text {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+    align-items: baseline;
+    flex-wrap: wrap;
+    column-gap: 8px;
+    margin: 0 0 12px;
   }
 
   .key-decisions-mobile-heading-title {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 600;
+    font-weight: 400;
     font-size: 16px;
     letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #94a3b8;
+    color: #cbd5e1;
     margin: 0;
+    padding: 20px 0 12px;
   }
 
-  .key-decisions-mobile-heading-subtitle {
-    font-family: 'Inter', sans-serif;
-    font-weight: 400;
-    font-size: 14px;
-    color: #64748b;
-    margin: 0;
+  .key-decisions-mobile-heading-count {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.5px;
+    color: #cbd5e1;
+    opacity: 0.55;
+  }
+
+  .key-decisions-mobile-heading-dot {
+    font-size: 9px;
+    margin: 0 6px 0 4px;
   }
 
   .key-decisions-frame {
+    position: relative;
+    z-index: 0;
     width: auto;
     box-sizing: border-box;
     margin-left: calc(-50vw + 50%);
     margin-right: calc(-50vw + 50%);
-    padding: 24px 20px;
+    padding: 16px 20px 24px;
     border: none;
     background: var(--pp-navy);
+    box-shadow:
+      inset 0 0 40px rgba(156, 220, 221, 0.1),
+      0 -24px 40px -16px rgba(2, 6, 23, 0.12),
+      0 24px 40px -16px rgba(2, 6, 23, 0.12);
+  }
+
+  .key-decisions-frame::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -30px;
+    bottom: -30px;
+    background: radial-gradient(ellipse at center, rgba(156, 220, 221, 0.1) 0%, rgba(156, 220, 221, 0) 70%);
+    filter: blur(24px);
+    z-index: -1;
+    pointer-events: none;
   }
 
   .key-decisions-header {
@@ -1748,7 +1782,7 @@ img, video {
   .rail-nav {
     height: auto;
     overflow: visible;
-    padding: 0;
+    padding: 0 0 20px;
     gap: 14px;
   }
 
@@ -1766,10 +1800,10 @@ img, video {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 13px 17px;
-    border: 1.5px solid #334155;
+    padding: 9px 17px 9px 10px;
+    border: 1.5px solid rgba(156, 220, 221, 0.5);
     border-radius: 12px;
-    background: rgba(15, 23, 42, 0.4);
+    background: #070d1f;
     cursor: pointer;
     transition: background-color 0.15s ease, border-color 0.15s ease;
   }
@@ -1777,7 +1811,7 @@ img, video {
   .rail-group-label-main {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 10px;
   }
 
   .rail-group-icon {
@@ -1785,15 +1819,19 @@ img, video {
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    width: 24px;
-    height: 24px;
-    color: #94a3b8;
+    width: 48px;
+    height: 48px;
+    color: #cbd5e1;
     transition: color 0.15s ease;
   }
 
   .rail-group-icon svg {
-    width: 24px;
-    height: 24px;
+    width: auto;
+    height: 30px;
+  }
+
+  .rail-group-icon--studio svg {
+    height: 34px;
   }
 
   .rail-group-text {
@@ -1802,7 +1840,7 @@ img, video {
     font-size: 16px;
     line-height: 22px;
     letter-spacing: 1px;
-    color: #94a3b8;
+    color: #cbd5e1;
     text-transform: none;
     transition: color 0.15s ease;
   }
@@ -1810,9 +1848,9 @@ img, video {
   .rail-group-chevron {
     display: flex;
     flex-shrink: 0;
-    width: 16px;
-    height: 16px;
-    color: #94a3b8;
+    width: 12px;
+    height: 12px;
+    color: #9cdcdd;
     transform: rotate(-90deg);
     transition: transform 0.15s ease, color 0.15s ease;
   }
