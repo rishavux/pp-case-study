@@ -248,7 +248,7 @@ img, video {
   align-items: flex-start;
   justify-content: center;
   gap: 48px;
-  padding: 32px 48px 16px;
+  padding: 32px 0 16px;
 }
 
 .overview-col {
@@ -258,7 +258,6 @@ img, video {
   gap: 0;
   width: 336px;
   padding: 20px 14px;
-  flex-shrink: 0;
   text-align: center;
 }
 
@@ -363,8 +362,8 @@ img, video {
    KEY DECISIONS
 ═══════════════════════════════════════════════════════════ */
 .key-decisions-title {
-  margin: 0 -116px 24px;
-  padding: 0 116px;
+  max-width: 1440px;
+  margin: 0 auto 24px;
 }
 
 .key-decisions-title .section-heading {
@@ -375,6 +374,8 @@ img, video {
 }
 
 .key-decisions-intro {
+  max-width: 1440px;
+  margin: 0 auto;
   padding: 28px 116px 28px;
   font-family: 'Inter', sans-serif;
   font-weight: 600;
@@ -389,8 +390,8 @@ img, video {
   max-width: 1440px;
   margin: 0 auto;
   padding: 0 116px 24px;
-  /* 1 (today's current sizing, unchanged) at the 1280px laptop floor; scales UP from there as the frame widens, capped at ~1.153 once the frame hits its 1440px design max - so desktop gets bigger instead of laptop getting smaller */
-  --kd-scale: clamp(1, calc((100vw - 232px) / 1048px), 1.153);
+  /* 1 at the 1280px laptop floor, scaling UP to ~1.153 at the 1440px design max; below 1280px it now scales DOWN too (floor 0.5, reached just under the 768px mobile breakpoint) so the frame's cards shrink in step with the aspect-ratio-locked frame instead of overflowing it */
+  --kd-scale: clamp(0.5, calc((100vw - 232px) / 1048px), 1.153);
 }
 
 .key-decisions-mobile-heading {
@@ -1504,8 +1505,7 @@ img, video {
     padding-top: 32px;
   }
 
-  .key-decisions-title {
-    padding: 0;
+  .section-title.key-decisions-title {
     margin-bottom: 28px;
   }
 
